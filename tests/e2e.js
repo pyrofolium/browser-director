@@ -1,32 +1,76 @@
 // Actual browser → video → camera render, including delayed audio and failed-take rejection.
-import assert from 'node:assert/strict';
-import { mkdtemp,readFile,writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
-import { join,resolve } from 'node:path';
-import { pathToFileURL } from 'node:url';
-import { loadPlan } from '../src/plan.js';
-import { record } from '../src/record.js';
-import { render } from '../src/render.js';
-import { run,duration } from '../src/process.js';
-const dir=await mkdtemp(join(tmpdir(),'browser-director-e2e-'));
-await run('ffmpeg',['-v','error','-f','lavfi','-i','sine=frequency=440:duration=2','-y',join(dir,'voice.wav')]);
-const raw=JSON.parse(await readFile(new URL('../examples/plan.json',import.meta.url),'utf8'));
-raw.url=pathToFileURL(resolve('examples/index.html')).href;
-raw.steps[3].audio='voice.wav';
-await writeFile(join(dir,'plan.json'),JSON.stringify(raw));
-const plan=await loadPlan(join(dir,'plan.json'));
-const file=await record(plan,join(dir,'take'));
-const m=JSON.parse(await readFile(file,'utf8'));
-assert.equal(m.steps.length,5);assert.equal(m.status,'complete');
-assert.ok(m.steps[3].end-m.audio[0].at>=2);
-const result=await render(file,join(dir,'demo.mp4'));
-assert.ok(result.offset>0&&result.offset<10);
-assert.ok(Math.abs(await duration(result.output)-m.duration)<.15);
-const probe=JSON.parse(await run('ffprobe',['-v','error','-show_streams','-of','json',result.output]));
-assert.ok(probe.streams.some(s=>s.codec_type==='audio'));
-assert.equal(probe.streams.find(s=>s.codec_type==='video').width,1440);
-await assert.rejects(render(file,result.output),/already exists/);
-const bad={...plan,timeoutMs:300,steps:[{action:'click',target:'#missing',holdMs:0}]};
-await assert.rejects(record(bad,join(dir,'failure')),/Timeout/);
-await assert.rejects(render(join(dir,'failure','recording.json'),join(dir,'failed.mp4')),/incomplete/);
+import assert from "node:assert/strict";
+import { mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
+import { pathToFileURL } from "node:url";
+import { loadPlan } from "../src/plan.js";
+import { record } from "../src/record.js";
+import { render } from "../src/render.js";
+import { run, duration } from "../src/process.js";
+const dir = await mkdtemp(join(tmpdir(), "browser-director-e2e-"));
+await run("ffmpeg", [
+  "-v",
+  "error",
+  "-f",
+  "lavfi",
+  "-i",
+  "sine=frequency=440:duration=2",
+  "-y",
+  join(dir, "voice.wav"),
+]);
+const raw = JSON.parse(
+  await readFile(new URL("../examples/plan.json", import.meta.url), "utf8"),
+);
+raw.url = pathToFileURL(resolve("examples/index.html")).href;
+raw.steps[3].audio = "voice.wav";
+await writeFile(join(dir, "plan.json"), JSON.stringify(raw));
+const plan = await loadPlan(join(dir, "plan.json"));
+const file = await record(plan, join(dir, "take"));
+const m = JSON.parse(await readFile(file, "utf8"));
+assert.equal(m.steps.length, 5);
+assert.equal(m.status, "complete");
+assert.ok(m.steps[3].end - m.audio[0].at >= 2);
+const result = await render(file, join(dir, "demo.mp4"));
+assert.ok(result.offset > 0 && result.offset < 10);
+assert.ok(Math.abs((await duration(result.output)) - m.duration) < 0.15);
+const probe = JSON.parse(
+  await run("ffprobe", [
+    "-v",
+    "error",
+    "-show_streams",
+    "-of",
+    "json",
+    result.output,
+  ]),
+);
+assert.ok(probe.streams.some((s) => s.codec_type === "audio"));
+assert.equal(probe.streams.find((s) => s.codec_type === "video").width, 1440);
+const silence = await run("ffmpeg", [
+  "-v",
+  "error",
+  "-i",
+  result.output,
+  "-af",
+  "silencedetect=noise=-50dB:d=0.1,ametadata=mode=print:file=-",
+  "-f",
+  "null",
+  "-",
+]);
+const onset = Number(silence.match(/lavfi\.silence_end=([\d.]+)/)?.[1]);
+assert.ok(
+  Math.abs(onset - m.audio[0].at) < 0.08,
+  `Audio onset ${onset} did not match cue ${m.audio[0].at}`,
+);
+await assert.rejects(render(file, result.output), /already exists/);
+const bad = {
+  ...plan,
+  timeoutMs: 300,
+  steps: [{ action: "click", target: "#missing", holdMs: 0 }],
+};
+await assert.rejects(record(bad, join(dir, "failure")), /Timeout/);
+await assert.rejects(
+  render(join(dir, "failure", "recording.json"), join(dir, "failed.mp4")),
+  /incomplete/,
+);
 console.log(`E2E passed. Artifacts: ${dir}`);

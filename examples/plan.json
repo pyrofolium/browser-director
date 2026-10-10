@@ -3,10 +3,40 @@
   "url": "${DEMO_URL}",
   "ready": "#create",
   "steps": [
-    {"action":"pause", "label":"See the whole workspace", "camera":"wide", "holdMs":1500},
-    {"action":"type", "target":"#name", "text":"Spring release", "label":"Name your launch", "camera":{"target":"#create"}, "holdMs":1000},
-    {"action":"click", "target":"#add", "label":"Create a checklist", "camera":{"target":"#create"}, "expect":{"target":"#status", "text":"Checklist created"}, "holdMs":700},
-    {"action":"focus", "target":"#result", "label":"Show the result", "camera":{"target":"#workspace"}, "holdMs":2200},
-    {"action":"pause", "label":"Return to the overview", "camera":"wide", "holdMs":1000}
+    {
+      "action": "pause",
+      "label": "See the whole workspace",
+      "camera": "wide",
+      "holdMs": 1500
+    },
+    {
+      "action": "type",
+      "target": "#name",
+      "text": "Spring release",
+      "label": "Name your launch",
+      "camera": { "target": "#create" },
+      "holdMs": 1000
+    },
+    {
+      "action": "click",
+      "target": "#add",
+      "label": "Create a checklist",
+      "camera": { "target": "#create" },
+      "expect": { "target": "#status", "text": "Checklist created" },
+      "holdMs": 700
+    },
+    {
+      "action": "focus",
+      "target": "#result",
+      "label": "Show the result",
+      "camera": { "target": "#workspace" },
+      "holdMs": 2200
+    },
+    {
+      "action": "pause",
+      "label": "Return to the overview",
+      "camera": "wide",
+      "holdMs": 1000
+    }
   ]
 }

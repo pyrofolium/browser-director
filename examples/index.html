@@ -1,4 +1,133 @@
-<!doctype html><html lang="en"><meta charset="utf-8"><title>Launchpad — Browser Director demo</title>
-<style>
-*{box-sizing:border-box}body{margin:0;background:#101627;color:#e9f0ff;font:18px system-ui}header{padding:28px 7%;border-bottom:1px solid #34405e;display:flex;justify-content:space-between}header span{color:#a1b4d7}main{max-width:1050px;margin:75px auto}small{color:#7be8d4;letter-spacing:3px}h1{font-size:48px;letter-spacing:-2px;margin:14px 0}p{color:#b2c3dc;line-height:1.6}.grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:38px}.card{padding:30px;background:#1a243c;border:1px solid #384764;border-radius:20px}h2{margin:0 0 18px;font-size:24px}label{display:block;color:#b2c3dc;font-size:15px;margin:20px 0 10px}input,button{font:inherit;border-radius:10px;padding:14px 18px}input{width:100%;border:1px solid #5b708f;background:#101627;color:white}button{background:#92e9d5;border:0;cursor:pointer;font-weight:650;margin-top:22px;color:#0d2731}.badge{font-size:14px;color:#92e9d5;background:#173e43;padding:7px 12px;border-radius:30px}#result{min-height:68px}.stat{font-size:46px;margin:22px 0 8px}footer{margin-top:42px;color:#8ea0bc;font-size:14px}
-</style><header><strong>◈ Launchpad</strong><span>Demo workspace</span></header><main><small>YOUR NEXT RELEASE</small><h1>Small steps. Clear progress.</h1><p>Create a launch checklist and see it appear in your workspace.</p><div class="grid"><section class="card" id="create"><h2>Start a checklist</h2><label for="name">What are you launching?</label><input id="name" placeholder="Name your release"><button id="add">Create checklist</button></section><section class="card" id="workspace"><h2>Your workspace</h2><span class="badge" id="status">Ready when you are</span><div class="stat" id="count">0</div><p id="result">Your new checklist will appear here.</p></section></div><footer>A local example • No account or network needed</footer></main><script>document.querySelector('#add').onclick=()=>{const name=document.querySelector('#name').value.trim();if(!name)return;document.querySelector('#result').textContent=name+' — ready to plan';document.querySelector('#count').textContent='1';document.querySelector('#status').textContent='Checklist created';};</script></html>
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><title>Launchpad — Browser Director demo</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: #101627;
+      color: #e9f0ff;
+      font: 18px system-ui;
+    }
+    header {
+      padding: 28px 7%;
+      border-bottom: 1px solid #34405e;
+      display: flex;
+      justify-content: space-between;
+    }
+    header span {
+      color: #a1b4d7;
+    }
+    main {
+      max-width: 1050px;
+      margin: 75px auto;
+    }
+    small {
+      color: #7be8d4;
+      letter-spacing: 3px;
+    }
+    h1 {
+      font-size: 48px;
+      letter-spacing: -2px;
+      margin: 14px 0;
+    }
+    p {
+      color: #b2c3dc;
+      line-height: 1.6;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      margin-top: 38px;
+    }
+    .card {
+      padding: 30px;
+      background: #1a243c;
+      border: 1px solid #384764;
+      border-radius: 20px;
+    }
+    h2 {
+      margin: 0 0 18px;
+      font-size: 24px;
+    }
+    label {
+      display: block;
+      color: #b2c3dc;
+      font-size: 15px;
+      margin: 20px 0 10px;
+    }
+    input,
+    button {
+      font: inherit;
+      border-radius: 10px;
+      padding: 14px 18px;
+    }
+    input {
+      width: 100%;
+      border: 1px solid #5b708f;
+      background: #101627;
+      color: white;
+    }
+    button {
+      background: #92e9d5;
+      border: 0;
+      cursor: pointer;
+      font-weight: 650;
+      margin-top: 22px;
+      color: #0d2731;
+    }
+    .badge {
+      font-size: 14px;
+      color: #92e9d5;
+      background: #173e43;
+      padding: 7px 12px;
+      border-radius: 30px;
+    }
+    #result {
+      min-height: 68px;
+    }
+    .stat {
+      font-size: 46px;
+      margin: 22px 0 8px;
+    }
+    footer {
+      margin-top: 42px;
+      color: #8ea0bc;
+      font-size: 14px;
+    }
+  </style>
+  <header><strong>◈ Launchpad</strong><span>Demo workspace</span></header>
+  <main>
+    <small>YOUR NEXT RELEASE</small>
+    <h1>Small steps. Clear progress.</h1>
+    <p>Create a launch checklist and see it appear in your workspace.</p>
+    <div class="grid">
+      <section class="card" id="create">
+        <h2>Start a checklist</h2>
+        <label for="name">What are you launching?</label
+        ><input id="name" placeholder="Name your release" /><button id="add">
+          Create checklist
+        </button>
+      </section>
+      <section class="card" id="workspace">
+        <h2>Your workspace</h2>
+        <span class="badge" id="status">Ready when you are</span>
+        <div class="stat" id="count">0</div>
+        <p id="result">Your new checklist will appear here.</p>
+      </section>
+    </div>
+    <footer>A local example • No account or network needed</footer>
+  </main>
+  <script>
+    document.querySelector("#add").onclick = () => {
+      const name = document.querySelector("#name").value.trim();
+      if (!name) return;
+      document.querySelector("#result").textContent = name + " — ready to plan";
+      document.querySelector("#count").textContent = "1";
+      document.querySelector("#status").textContent = "Checklist created";
+    };
+  </script>
+</html>

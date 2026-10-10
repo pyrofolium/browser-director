@@ -6,14 +6,23 @@ A plan is strict JSON. Unknown properties are errors. See the installed CLI's `i
 {
   "version": 1,
   "url": "${DEMO_URL}",
-  "viewport": {"width": 1440, "height": 900},
+  "viewport": { "width": 1440, "height": 900 },
   "ready": "#workspace",
   "steps": [
-    {"action":"pause", "camera":"wide", "holdMs":1200},
-    {"action":"type", "target":"#name", "text":"Example"},
-    {"action":"click", "target":"#create", "camera":{"target":"#form"},
-     "expect":{"target":"#result", "text":"Created"}},
-    {"action":"focus", "target":"#result", "audio":"result.wav", "holdMs":1000}
+    { "action": "pause", "camera": "wide", "holdMs": 1200 },
+    { "action": "type", "target": "#name", "text": "Example" },
+    {
+      "action": "click",
+      "target": "#create",
+      "camera": { "target": "#form" },
+      "expect": { "target": "#result", "text": "Created" }
+    },
+    {
+      "action": "focus",
+      "target": "#result",
+      "audio": "result.wav",
+      "holdMs": 1000
+    }
   ]
 }
 ```
@@ -22,15 +31,15 @@ Top-level: `version`, `url`, optional `viewport` (1440×900), `ready` (CSS selec
 
 All steps support `label`, `holdMs` (1200), `audio` (relative to the plan), `expect` (`target`, optional text substring), and `camera`.
 
-| Action | Required | Behavior |
-|---|---|---|
-| `click` | `target` | Smooth cursor approach and actionable click |
-| `type` | `target`, `text` | Clears input then types; `delayMs` defaults to 45 |
-| `focus` | `target` | Frames and points, without clicking |
-| `scroll` | `target` | Centers the element before the next beat |
-| `wait` | `target` | Waits for visibility; optional `text` substring |
-| `press` | `key` | Playwright keyboard key, e.g. `Enter` |
-| `pause` | — | Holds the current view |
+| Action   | Required         | Behavior                                          |
+| -------- | ---------------- | ------------------------------------------------- |
+| `click`  | `target`         | Smooth cursor approach and actionable click       |
+| `type`   | `target`, `text` | Clears input then types; `delayMs` defaults to 45 |
+| `focus`  | `target`         | Frames and points, without clicking               |
+| `scroll` | `target`         | Centers the element before the next beat          |
+| `wait`   | `target`         | Waits for visibility; optional `text` substring   |
+| `press`  | `key`            | Playwright keyboard key, e.g. `Enter`             |
+| `pause`  | —                | Holds the current view                            |
 
 Selectors are CSS (including Playwright CSS extensions); each must resolve uniquely. Open shadow roots are supported. Iframes are not supported in v1.
 
@@ -43,6 +52,7 @@ Audio starts after the camera settles. A step holds for at least `holdMs` after 
 Recording outputs: `capture/*.webm`, `recording.json`, `step-NN.png`; rendering adds `demo.mp4`, `demo.mp4.chapters.json`, `render.ffgraph`. Keep the original capture and audio paths accessible for re-rendering. Do not edit a failed manifest to force rendering.
 
 Commands:
+
 ```
 browser-director record plan.json --out take-1
 browser-director render take-1/recording.json --output take-1/revised.mp4

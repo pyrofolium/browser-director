@@ -57,11 +57,19 @@ Codex uses `~/.agents/skills/browser-director` (or `$CODEX_HOME/skills/browser-d
   "url": "${DEMO_URL}",
   "ready": "#workspace",
   "steps": [
-    {"action":"pause", "camera":"wide", "holdMs":1200},
-    {"action":"type", "target":"#name", "text":"Spring release",
-     "camera":{"target":"#create-form"}},
-    {"action":"click", "target":"#create", "expect":{"target":"#result", "text":"Created"}},
-    {"action":"focus", "target":"#result", "audio":"result.wav"}
+    { "action": "pause", "camera": "wide", "holdMs": 1200 },
+    {
+      "action": "type",
+      "target": "#name",
+      "text": "Spring release",
+      "camera": { "target": "#create-form" }
+    },
+    {
+      "action": "click",
+      "target": "#create",
+      "expect": { "target": "#result", "text": "Created" }
+    },
+    { "action": "focus", "target": "#result", "audio": "result.wav" }
   ]
 }
 ```
