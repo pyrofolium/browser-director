@@ -1,0 +1,11 @@
+node_modules/
+out/
+*.tgz
+*.mp4
+*.webm
+*.wav
+*.mp3
+.env*
+.sessions/
+*.state.json
+.DS_Store

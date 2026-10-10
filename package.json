@@ -1,0 +1,14 @@
+{
+  "name": "@pyrofolium/browser-director",
+  "version": "0.1.0",
+  "description": "Script real browser demos with smooth camera motion and synchronized narration",
+  "type": "module",
+  "license": "MIT",
+  "author": "pyrofolium",
+  "repository": "github:pyrofolium/browser-director",
+  "engines": {"node": ">=22"},
+  "bin": {"browser-director": "bin/browser-director.js"},
+  "files": ["bin", "src", "skill", "examples", "README.md", "LICENSE"],
+  "scripts": {"test": "node --test tests/*.test.js", "test:e2e": "node tests/e2e.js", "check": "node --check bin/browser-director.js && node --test tests/*.test.js"},
+  "dependencies": {"playwright": "1.62.1", "zod": "4.1.12"}
+}
